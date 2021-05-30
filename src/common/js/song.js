@@ -1,5 +1,6 @@
 import { getLyric } from 'api/song'
 import { ERR_OK } from 'api/config'
+//class类
 export default class Song {
     constructor({ id, singer, name, album, duration, image, url }) {
             this.id = id
@@ -31,6 +32,7 @@ export default class Song {
         })
     }
 }
+//实例化一个song
 export function createSong(hotSongs) {
     return new Song({
         id: hotSongs.id,
@@ -66,5 +68,16 @@ export function createTopSong(musicData) {
         image: musicData.al.picUrl,
         ar: musicData.ar,
         url: `https://v1.itooi.cn/netease/url?id=${musicData.privilege.id}&quality=flac`
+    })
+}
+export function searchSong(searchsongs) {
+    return new Song({
+        id: searchsongs.id,
+        singer: searchsongs.artists[0].name,
+        name: searchsongs.name,
+        // duration: musicData.dt / 1000.847826086957,
+        image: searchsongs.artists[0].img1v1Url,
+        // ar: musicData.ar,
+        url: `http://music.163.com/song/media/outer/url?id=${searchsongs.id}.mp3`
     })
 }

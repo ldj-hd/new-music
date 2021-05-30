@@ -63,7 +63,7 @@
               <i class="icon-next" @click="next"></i>
             </div>
             <div class="icon i-right">
-              <i class="icon icon-not-favorite"></i>
+              <i class="icon" :class="getFavoriteIcon(currentSong)" @click="toggleFavorite(currentSong)"></i>
             </div>
           </div>
         </div>
@@ -91,6 +91,7 @@
 </template>
 <script type="text/ecmascript-6">
   import {mapGetters,mapMutations} from 'vuex'
+  import {playerMixin,} from 'common/js/mixin'
   import animations from "create-keyframe-animation"
   import { prefixStyle } from "common/js/dom";
   import ProgressBar from 'base/progress-bar/progress-bar'
@@ -105,6 +106,7 @@
   
 
   export default{
+    mixins:[playerMixin],
       data(){
         return {
           songReady:false,
@@ -135,7 +137,7 @@
           return this.currentTime / (this.currentSong.duration/1000)
         },
         ...mapGetters([
-          'fullScreen',
+          'fullScreen',//控制小显示
           'playlist',
           'currentSong',
           'playing',
@@ -258,11 +260,12 @@
         getLyric(){
           //解析歌词
           this.currentSong.getLyric().then((lyric) => {
+            // console.log(lyric)
             this.currentLyric = new Lyric(lyric,this.handleLyric)
             if(this.playing){
               this.currentLyric.play()
             }
-            // console.log(this.currentLyric)
+            console.log(this.currentLyric)
           }).catch(() => {
             this.currentLyric = null
             this.playingLyric = ''
@@ -341,7 +344,9 @@
         }
       },
       watch:{
+        //当current变化，调用play方法
         currentSong(newSong,oldSong){
+          // console.log(this.currentSong)
           if(newSong.id === oldSong.id){
             return 
           }

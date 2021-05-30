@@ -24,6 +24,7 @@
             bgImage(){
                 return this.singer.img1v1Url
             },
+            //取数据,就是在getters里面拿
             ...mapGetters([
                 'singer'
             ])
@@ -38,9 +39,10 @@
                     this.$router.push('/singer')
                     return
                 }
+                //通过vuexx获取歌手的id
                 getSingerDetail(this.singer.id).then((res) => {
                     if(res.code === 200){
-                        // console.log(res.hotSongs)
+                        console.log(res.hotSongs)
                         this.songs = this._normalizeSongs(res.hotSongs)
                         console.log(this.songs)
                     }
@@ -49,6 +51,7 @@
             _normalizeSongs(hotSongs){
                 let ret =[]
                 hotSongs.forEach((item) => {
+                    //获取徐需要的内容
                     ret.push(createSong(item))
                 })
                 // console.log(ret)

@@ -56,6 +56,7 @@
       }
     },
     computed:{
+      //得到title集合数组
         shortcutList(){
             return this.data.map((group) =>{
                 return group.title.substr(0,1)
@@ -65,7 +66,7 @@
     computed: {
       shortcutList() {
         return this.data.map((group) => {
-          return group.title.substr(0, 1)
+          return group.title.substr(0,1)
         })
       },
       fixedTitle() {
@@ -122,6 +123,7 @@
         for (let i = 0; i < list.length; i++) {
           let item = list[i]
           height += item.clientHeight
+          //得到每个元素对应的heigth
           this.listHeight.push(height)
         }
       },

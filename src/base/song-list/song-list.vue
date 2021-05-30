@@ -23,6 +23,7 @@
       selectItem(item,index){
         this.$emit('select', item, index)
       },
+  //展示的歌曲的歌手名字和专辑名称
       getDesc(song) {
         return `${song.singer}·${song.album}`
       }

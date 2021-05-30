@@ -1,130 +1,87 @@
 <template>
-  <scroll
-    @beforeScroll="listScroll"
-    :beforeScroll="beforeScroll"
-    ref="suggest"
-    :pullup="pullup"
-    @scrollToEnd="searchMore"
-    class="suggest"
-    :data="resule"
-  >
-    <ul class="suggest-list">
-      <li @click="selectItem(item)" class="suggest-item" v-for="item of resule">
-        <div class="icon">
-          <i class="icon-music"></i>
-        </div>
-        <div class="name">
-          <p class="text" v-html="getDisplayName(item)"></p>
-        </div>
-      </li>
-      <h1 class="hasmoresing" v-show="hasmoresing">暂无更多歌曲</h1>
-      <loading v-show="hasmore" title></loading>
-    </ul>
-    <div v-show="!hasmore && !resule.length" class="no-result-wrapper">
-      <no-result title="抱歉，暂无搜索结果"></no-result>
+  <scroll class="suggest" :data="result" ref="suggest" >
+      <ul class="suggest-list">
+        <li class="suggest-item" v-for="item in result"  @click="selectItem(item)">
+          <div class="icon">
+            <i :class="getIconCls(item)"></i>
+          </div>
+          <div class="name">
+            <p class="text" v-html="getDisplayName(item)"></p>
+          </div>
+        </li>
+<!--        <loading title="" v-show="isshow" ></loading>-->
+      </ul>
+    <div class="no-result-wrapper" v-show="!result.length">
+      <no-result title="抱歉,暂无搜索结果"></no-result>
     </div>
   </scroll>
 </template>
 <script>
-import { getSearch } from "api/search.js";
-import Scroll from "base/scroll/scroll";
-import NoResult from "base/no-result/no-result";
-import Loading from "base/loading/loading";
-import { createTopSong } from "common/js/song";
-import { mapActions } from "vuex";
-const perpage = 20;
-export default {
-  name: "suggest",
-  props: ["query"],
-  data() {
-    return {
-      type: "song",
-      resule: [],
-      page: 1,
-      pullup: true,
-      hasmore: true,
-      hasmoresing: false,
-      beforeScroll: true
-    };
-  },
-  methods: {
-    refresh() {
-      this.$refs.suggest.refresh();
-    },
-    search() {
-      this.resule = [];
-      if (!this.query) {
-        return;
-      }
-      this.hasmore = true;
-      this.hasmoresing = false;
-      this.$refs.suggest.scrollTo(0, 0);
-      getSearch(this.query, this.type, perpage, this.page).then(res => {
-        if (res.code === 200) {
-          this.checkhas(res);
-          if (!res.data.hasOwnProperty("songs")) {
-            return;
-          }
-          this.resule = this._normalizeSongs(res.data.songs);
-          console.log(this.resule)
-        }
-      });
-    },
-    _normalizeSongs(list) {
-      let ret = [];
-      list.forEach(item => {
-        if (item.id && item.name) {
-          ret.push(createTopSong(item));
-        }
-      });
-      return ret;
-    },
-    getDisplayName(item) {
-      return `${item.name} - ${item.ar[0].name}`;
-    },
-    searchMore() {
-      if (this.hasmoresing) {
-        return;
-      }
-      this.hasmore = true;
-      this.page++;
-      getSearch(this.query, this.type, perpage, this.page).then(res => {
-        if (res.code === 200) {
-          this.checkhas(res);
-          if (!this.hasmore) {
-            this.hasmoresing = true;
-            return;
-          }
-          this.resule = this.resule.concat(res.data.songs);
-          this.hasmore = false;
-        }
-      });
-    },
-    checkhas(res) {
-      if (!res.hasOwnProperty("data") || !res.data.hasOwnProperty("songs")) {
-        this.hasmore = false;
+  import {getSearch} from "api/search";
+  import Scroll from 'base/scroll/scroll';
+  import Loading from 'base/loading/loading';
+  import {mapActions} from 'vuex';
+  import NoResult from'base/no-result/no-result'
+
+  export default {
+    data(){
+      return {
+        isshow:true,
+        limit:50,
+        result:[],
       }
     },
-    selectItem(item) {
-      this.insertSong(item);
-      this.$emit("selectItem");
+  props:{
+    query:{
+      type:String,
+      default:''
     },
-    listScroll() {
-      this.$emit("listScroll");
-    },
-    ...mapActions(["insertSong"])
-  },
-  watch: {
-    query(newquery) {
-      this.search();
+    //是否显示歌手
+    showSinger:{
+      type:Boolean,
+      default: true
     }
   },
-  components: {
-    Scroll,
-    NoResult,
-    Loading
-  }
-};
+  methods:{
+    search(){
+      this.$refs.suggest.scrollTo(0,0)
+      getSearch(this.query,this.limit).then((res) => {
+        if(res.code === 200){
+          this.result = res.result.songs
+          this.isshow = false
+          console.log(res.result);
+        }
+      })
+    },
+    getIconCls(item){
+      return 'icon-music'
+    },
+    getDisplayName(item){
+      return item.name
+    },
+    selectItem(item){
+      console.log(item);
+      this.insertSong(item);
+      //派发一个事件出去
+      this.$emit('select')
+    },
+    ...mapActions([
+        'insertSong',
+        'selectPlay'
+    ])
+  },
+  watch:{
+      //query改变触发调用接口
+    query(){
+      this.search()
+    }
+  },
+    components:{
+      Scroll,
+      Loading,
+      NoResult
+    }
+}
 </script>
 <style scoped lang="stylus" rel="stylesheet/stylus">
 @import '~common/stylus/variable';

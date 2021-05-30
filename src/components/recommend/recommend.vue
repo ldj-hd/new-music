@@ -34,6 +34,9 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+  // import Swiper from 'swiper'
+  // import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper'
+  // import 'swiper/css/swiper.css'
   import Loading from 'base/loading/loading'
   import Scroll from 'base/scroll/scroll'
   import Slider from 'base/slider/slider'
@@ -50,11 +53,14 @@
       }
     },
     created(){
+      //获取这个方法
       this._getRecommend(),
       // setTimeout(() => {
       //   this._getDiscList()
       // },2000)
       this._getDiscList()
+      this.checkLoaded = !this.checkLoaded
+      // console.log(this.checkLoaded)
     },
     methods:{
       _getRecommend(){
@@ -65,17 +71,19 @@
           }
         })
       },
+      // 获取对应的歌单id,可以获取对应的歌单。
       selectItem(item){
         this.$router.push({
           path:`/recommend/${item.id}`
         })
+        // 存放点击的歌单的信息
         this.setDisc(item)
       },
       _getDiscList(){
         getDiscList().then((res) => {
           if(res.code === 200){
             this.discList = res.playlists
-            // console.log(this.discList)
+            console.log(this.discList)
           }
         })
       },
@@ -98,7 +106,6 @@
 </script>
 <style scoped lang="stylus" rel="stylesheet/stylus" >
 @import '~common/stylus/variable';
-
   .recommend
     position: fixed
     width: 100%

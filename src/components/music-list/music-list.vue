@@ -57,15 +57,18 @@
       }
     },
     computed: {
+      //处理背景图片
       bgStyle() {
         return `background-image:url(${this.bgImage})`
       }
     },
     created(){
       this.probeType = 3
+      //监听滚动
       this.listenScroll = true
     },
     mounted(){
+      // 设置滚动组件距离顶部的位置
       this.imageHeight = this.$refs.bgImage.clientHeight
       this.minTranslateY = -this.imageHeight + RESERVED_HEIGHT
       this.$refs.list.$el.style.top = `${this.imageHeight}px`
@@ -84,7 +87,9 @@
         this.$router.back()
       },
       selectItem(item,index){
+        console.log(this.songs);
         this.selectPlay({
+          // list存放songs的列表，index保存点击到的歌曲的下标是哪一个
           list: this.songs,
           index
         })
@@ -94,6 +99,7 @@
           list:this.songs
         })
       },
+      //播放歌曲是异步操作，所以用action来操作
       ...mapActions([
         'selectPlay',
         'randomPlay'

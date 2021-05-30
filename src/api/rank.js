@@ -22,6 +22,12 @@ export function getTopList(index) {
         return Promise.resolve(res.data)
     })
 }
+export function bd(){
+    const url = `api/toplist`
+    return axios.get(url).then((res) => {
+        return Promise.resolve(res.data)
+    })
+}
 
 export function getMusicList(index) {
     const url = `api/top/list?idx=${index}`

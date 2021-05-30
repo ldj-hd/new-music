@@ -25,12 +25,13 @@
 import Scroll from "base/scroll/scroll";
 import { playlistMixin } from "common/js/mixin";
 import { mapMutations } from "vuex";
-import { getTopList } from "api/rank.js";
+import { getTopList,bd} from "api/rank.js";
 import Loading from "base/loading/loading";
 export default {
   mixins: [playlistMixin],
   created() {
     this._getTopList();
+    this._bd();
   },
   data() {
     return {
@@ -52,6 +53,13 @@ export default {
       }
       this.topList = arr
       console.log(this.topList)
+    },
+    _bd(){
+      bd().then(res => {
+        if(res.code === 200){
+          // console.log(res.list)
+        }
+      })
     },
     handlePlaylist(playlist) {
       const bottom = playlist.length > 0 ? "60px" : "";

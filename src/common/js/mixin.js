@@ -36,7 +36,7 @@ export const playerMixin = {
       'playlist',
       'currentSong',
       'mode',
-      'favoriteList'
+      'favoriteList',
     ])
   },
   methods: {
@@ -66,6 +66,7 @@ export const playerMixin = {
       }
     },
     getFavoriteIcon(song) {
+      //判断是否为喜欢
       if (this.isFavorite(song)) {
         return 'icon-favorite'
       }

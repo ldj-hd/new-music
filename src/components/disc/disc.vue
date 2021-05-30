@@ -32,8 +32,11 @@ export default {
           return
         }
       getSongList(this.disc.id).then(res => {
+        console.log(this.disc.id);
         if (res.code === 200) {
+          console.log(res,111);
           this.songs = this._normalizeSongs(res.playlist.tracks);
+          console.log(res.playlist.tracks)
           console.log(this.songs)
         }
       });

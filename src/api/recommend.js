@@ -9,9 +9,9 @@ export function getRecommend() {
         return Promise.resolve(res.data)
     })
 }
-
 export function getDiscList() {
     const url = 'api/top/playlist'
+    //对象的合并,第一个参数是目标对象，第二个是源对象
     const data = Object.assign({}, {
         cat: '全部',
         pageSize: 20,

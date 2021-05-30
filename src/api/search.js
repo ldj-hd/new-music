@@ -11,15 +11,32 @@ export function getHotKey() {
         return Promise.resolve(res.data)
     })
 }
-export function getSearch(keyword, type, pageSize, page) {
+ // 默认显示搜索的内容
+export function getSearchDef(){
+    const url = "api/search/default"
+    return axios.get(url).then( (res) => {
+        return Promise.resolve(res.data)
+    })
+}
+export function getSearch(keywords,limit) {
     const url = "api/search"
     const data = Object.assign({
-        keyword, //关键词
-        type, //搜索类型
-        pageSize, //请求数量
-        page //请求分页
+        keywords, //关键词
+        // limit,
+        // type, //搜索类型
+        limit, //请求数量
+        // page //请求分页
     })
     return axios.get(url, { params: data }).then(res => {
         return Promise.resolve(res.data)
     })
 }
+// export function getSearch(keyword) {
+//     const url = "api/search"
+//     const data = Object.assign({
+//         keyword //关键词
+//     })
+//     return axios.get(url, { params: data }).then(res => {
+//         return Promise.resolve(res.data)
+//     })
+// }

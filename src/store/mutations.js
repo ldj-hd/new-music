@@ -28,10 +28,18 @@ const mutations = {
     [types.SET_TOP_LIST](state, topList) {
         state.topList = topList
     },
+    [types.SET_SEARCH_SONGS](state, searchsongs) {
+        state.searchsongs = searchsongs
+    },
+    [types.SET_SEARCH_HISTORY](state,history){
+      state.searchHistory = history
+    },
     selectItem(state, index) {
-        state.index = index
+       state.searchsongs = state.index = index
+    },
+    [types.SET_FAVORITE_LIST](state,list){
+        state.favoriteList = list
     }
-
 }
 
 export default mutations

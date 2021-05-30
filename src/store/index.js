@@ -9,7 +9,7 @@ import createLogger from 'vuex/dist/logger'
 Vue.use(Vuex)
 
 const debug = process.env.NODE_NEW !== 'production'
-
+    //导出一个实例
 export default new Vuex.Store({
     actions,
     getters,

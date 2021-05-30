@@ -20,6 +20,7 @@ export default {
       currentPageIndex: 0
     };
   },
+  //外部可以控制这个组件的轮播方式
   props: {
     loop: {
       type: Boolean,
@@ -35,6 +36,7 @@ export default {
     }
   },
   mounted() {
+    //保证dom全部渲染
     setTimeout(() => {
       this._setSilderWidth();
       this._initDots();

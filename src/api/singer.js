@@ -3,11 +3,17 @@ import { commonParams, options } from 'api/config'
 import axios from 'axios'
 
 export function getSingerList() {
-    const url = 'api//toplist/artist'
+    const url = 'api/toplist/artist'
     return axios.get(url).then((res) => {
         return Promise.resolve(res.data)
     })
 }
+// export function getSinger(){
+//     const url = 'api/toplist/artist'
+//     return axios.get(url).then((res) => {
+//         return Promise.resolve(res.data)
+//     })
+// }
 export function getSingerDetail(singerid) {
     const url = 'api/artists'
     const data = { id: singerid }

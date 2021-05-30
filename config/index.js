@@ -6,7 +6,6 @@ const path = require('path')
 
 module.exports = {
     dev: {
-
         // Paths
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
@@ -14,6 +13,7 @@ module.exports = {
             '/api': {
                 target: 'http://localhost:3000',
                 changeOrigin: true,
+                // secure: true, // 不进行证书验证
                 pathRewrite: {
                     '^/api': ''
                 }
@@ -54,7 +54,7 @@ module.exports = {
     build: {
         // Template for index.html
         index: path.resolve(__dirname, '../dist/index.html'),
-
+        port:9000,
         // Paths
         assetsRoot: path.resolve(__dirname, '../dist'),
         assetsSubDirectory: 'static',
