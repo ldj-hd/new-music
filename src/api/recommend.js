@@ -23,6 +23,7 @@ export function getDiscList() {
     }).then((res) => {
         return Promise.resolve(res.data)
     })
+
 }
 
 export function getSongList(dissid) {
